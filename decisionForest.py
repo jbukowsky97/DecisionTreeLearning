@@ -1,3 +1,4 @@
+import sys
 import math
 import json
 import random
@@ -5,14 +6,15 @@ from neural_node import NeuralNode
 
 THRESHOLD_PERCENTAGE = 1.0
 THRESHOLD_MIN_ENTRIES = 50
-FOREST_SIZE = 50
 
 ################################################
 # CIS 678 Decision Tree Learning
 #
 # parses data, creates neural network, checks results
+#
+# @param FOREST_SIZE number of trees in forest
 ################################################
-def decision_forest():
+def decision_forest(FOREST_SIZE):
     data = None
     with open("agaricus-lepiota.data") as f:
         data = [line.split(',') for line in f.read().splitlines()]
@@ -180,4 +182,13 @@ def p_log_p(ratio):
 # starts program by running main function
 ################################################
 if __name__ == "__main__":
-    decision_forest()
+    if len(sys.argv) != 2:
+        print("Usage:\n\tpython3 decisionForest.py <forest_size>")
+        sys.exit(1)
+    forest_size = None
+    try:
+        forest_size = int(sys.argv[1])
+    except ValueError:
+        print("** Must provide integer for forest size")
+        sys.exit(1)
+    decision_forest(forest_size)
